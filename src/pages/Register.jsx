@@ -145,7 +145,7 @@ const Register = () => {
                      Select Clearance Level
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {['School Student', 'College Student'].map((type) => (
+                    {['School Student', 'College Student', 'Recruiter', 'Alumni/Mentor'].map((type) => (
                       <button
                         key={type}
                         type="button"
@@ -160,7 +160,7 @@ const Register = () => {
                       >
                          {formData.accountType === type && <div className="absolute inset-0 bg-primary/5 animate-pulse"></div>}
                         <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                          {type === 'School Student' ? '🎒' : '🎓'}
+                          {type === 'School Student' ? '🎒' : type === 'College Student' ? '🎓' : type === 'Recruiter' ? '💼' : '🌟'}
                         </div>
                         <h3 className={`text-sm font-bold uppercase tracking-wider mb-1 ${formData.accountType === type ? 'text-primary' : 'text-white'}`}>
                            {type}
@@ -168,7 +168,11 @@ const Register = () => {
                         <p className="text-[10px] text-text-muted font-mono">
                           {type === 'School Student' 
                             ? 'LEVEL_1 CHECK [GRADES 9-12]'
-                            : 'LEVEL_2 CHECK [UNDERGRAD/GRAD]'
+                            : type === 'College Student'
+                            ? 'LEVEL_2 CHECK [UNDERGRAD/GRAD]'
+                            : type === 'Recruiter'
+                            ? 'CORPORATE_ACCESS [HIRING]'
+                            : 'MENTOR_ACCESS [GUIDANCE]'
                           }
                         </p>
                       </button>
@@ -266,7 +270,7 @@ const Register = () => {
                 </motion.div>
               )}
 
-              {/* Step 3: Institution Details */}
+              {/* Step 3: Role-Specific Details */}
               {currentStep === 3 && (
                  <motion.div
                     key="step3"
@@ -276,12 +280,14 @@ const Register = () => {
                     transition={{ duration: 0.3 }}
                     className="space-y-6"
                  >
-                    <h2 className="text-xl font-bold text-white uppercase tracking-wider mb-6">Origin Data</h2>
+                    <h2 className="text-xl font-bold text-white uppercase tracking-wider mb-6">
+                      {(formData.accountType === 'Recruiter' || formData.accountType === 'Alumni/Mentor') ? 'Professional Data' : 'Origin Data'}
+                    </h2>
                     
                     <div className="space-y-4">
                        <div className="group">
                           <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
-                             Institution_Name
+                             {(formData.accountType === 'Recruiter' || formData.accountType === 'Alumni/Mentor') ? 'Company_/_Organization' : 'Institution_Name'}
                           </label>
                           <div className="relative">
                              <Building className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
@@ -290,7 +296,7 @@ const Register = () => {
                                 name="institution"
                                 value={formData.institution}
                                 onChange={handleChange}
-                                placeholder="ENTER_INSTITUTION_ID..."
+                                placeholder={(formData.accountType === 'Recruiter' || formData.accountType === 'Alumni/Mentor') ? "ENTER_COMPANY_NAME..." : "ENTER_INSTITUTION_ID..."}
                                 className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono uppercase"
                                 required
                              />
@@ -298,43 +304,87 @@ const Register = () => {
                        </div>
 
                        <div className="grid grid-cols-2 gap-4">
-                           <div className="group">
-                              <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
-                                 Grad_Year
-                              </label>
-                              <div className="relative">
-                                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                                 <select
-                                    name="graduationYear"
-                                    value={formData.graduationYear}
-                                    onChange={handleChange}
-                                    className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono appearance-none"
-                                    required
-                                 >
-                                    <option value="">SELECT_YEAR</option>
-                                    {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map(year => (
-                                       <option key={year} value={year}>{year}</option>
-                                    ))}
-                                 </select>
-                              </div>
-                           </div>
-                           <div className="group">
-                              <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
-                                 Stream/Course
-                              </label>
-                              <div className="relative">
-                                 <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-                                 <input
-                                    type="text"
-                                    name="course"
-                                    value={formData.course}
-                                    onChange={handleChange}
-                                    placeholder="PROGRAM_ID..."
-                                    className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono uppercase"
-                                    required
-                                 />
-                              </div>
-                           </div>
+                           {(formData.accountType === 'Recruiter' || formData.accountType === 'Alumni/Mentor') ? (
+                             <>
+                               <div className="group">
+                                  <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
+                                     Role_/_Position
+                                  </label>
+                                  <div className="relative">
+                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                                     <input
+                                        type="text"
+                                        name="course" // Reusing course field for Role/Position to keep state simple
+                                        value={formData.course}
+                                        onChange={handleChange}
+                                        placeholder="HR_MANAGER..."
+                                        className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono uppercase"
+                                        required
+                                     />
+                                  </div>
+                               </div>
+                               <div className="group">
+                                  <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
+                                     Experience
+                                  </label>
+                                  <div className="relative">
+                                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                                     <select
+                                        name="graduationYear" // Reusing graduationYear for Experience to keep state simple
+                                        value={formData.graduationYear}
+                                        onChange={handleChange}
+                                        className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono appearance-none"
+                                        required
+                                     >
+                                        <option value="">SELECT_EXP</option>
+                                        {['0-2 YEARS', '3-5 YEARS', '5-10 YEARS', '10+ YEARS'].map(exp => (
+                                           <option key={exp} value={exp}>{exp}</option>
+                                        ))}
+                                     </select>
+                                  </div>
+                               </div>
+                             </>
+                           ) : (
+                             <>
+                               <div className="group">
+                                  <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
+                                     Grad_Year
+                                  </label>
+                                  <div className="relative">
+                                     <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                                     <select
+                                        name="graduationYear"
+                                        value={formData.graduationYear}
+                                        onChange={handleChange}
+                                        className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono appearance-none"
+                                        required
+                                     >
+                                        <option value="">SELECT_YEAR</option>
+                                        {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map(year => (
+                                           <option key={year} value={year}>{year}</option>
+                                        ))}
+                                     </select>
+                                  </div>
+                               </div>
+                               <div className="group">
+                                  <label className="block text-[10px] uppercase tracking-widest text-text-muted mb-2 group-focus-within:text-primary transition-colors">
+                                     Stream/Course
+                                  </label>
+                                  <div className="relative">
+                                     <BookOpen className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+                                     <input
+                                        type="text"
+                                        name="course"
+                                        value={formData.course}
+                                        onChange={handleChange}
+                                        placeholder="PROGRAM_ID..."
+                                        className="w-full bg-black/50 border border-white/10 py-3 pl-12 pr-4 text-sm text-white focus:border-primary focus:outline-none transition-colors font-mono uppercase"
+                                        required
+                                     />
+                                  </div>
+                               </div>
+                             </>
+                           )}
                        </div>
                     </div>
                  </motion.div>

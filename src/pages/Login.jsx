@@ -12,6 +12,7 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    role: 'student' // Default role
   });
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -42,7 +43,7 @@ const Login = () => {
         id: 1,
         name: 'Lakshmipathy R',
         email: formData.email,
-        role: 'student',
+        role: formData.role, // Use selected role
         avatar: null,
       });
       navigate('/dashboard');
@@ -186,76 +187,93 @@ const Login = () => {
               <p className="text-text-muted text-sm">Enter you credentials to bypass the firewall.</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-primary uppercase tracking-widest">User_ID / Email</label>
-                <input 
-                  type="email" 
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-surface border-b-2 border-white/20 px-4 py-3 text-white focus:outline-none focus:border-primary focus:bg-white/5 transition-all text-lg placeholder:text-white/20"
-                  placeholder="student@university.edu"
-                />
+              <div className="relative z-10 grid grid-cols-2 gap-4 mb-6">
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, role: 'student'})}
+                  className={`py-2 text-xs uppercase tracking-widest border transition-colors ${formData.role === 'student' ? 'bg-primary text-black border-primary font-bold' : 'border-white/20 text-text-muted hover:border-white'}`}
+                >
+                  Student
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({...formData, role: 'recruiter'})}
+                  className={`py-2 text-xs uppercase tracking-widest border transition-colors ${formData.role === 'recruiter' ? 'bg-primary text-black border-primary font-bold' : 'border-white/20 text-text-muted hover:border-white'}`}
+                >
+                   Recruiter
+                </button>
               </div>
 
-              <div className="space-y-2 relative">
-                <label className="text-xs font-bold text-primary uppercase tracking-widest">Passcode</label>
-                <div className="relative">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-primary uppercase tracking-widest">User_ID / Email</label>
                   <input 
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    value={formData.password}
+                    type="email" 
+                    name="email"
+                    value={formData.email}
                     onChange={handleChange}
                     className="w-full bg-surface border-b-2 border-white/20 px-4 py-3 text-white focus:outline-none focus:border-primary focus:bg-white/5 transition-all text-lg placeholder:text-white/20"
-                    placeholder="••••••••"
+                    placeholder="student@university.edu"
                   />
+                </div>
+  
+                <div className="space-y-2 relative">
+                  <label className="text-xs font-bold text-primary uppercase tracking-widest">Passcode</label>
+                  <div className="relative">
+                    <input 
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="w-full bg-surface border-b-2 border-white/20 px-4 py-3 text-white focus:outline-none focus:border-primary focus:bg-white/5 transition-all text-lg placeholder:text-white/20"
+                      placeholder="••••••••"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+  
+                <div className="flex items-center justify-between pt-2">
+                  <label className="flex items-center space-x-2 cursor-pointer group">
+                    <div className="w-4 h-4 border border-white/30 group-hover:border-primary flex items-center justify-center transition-colors">
+                      <div className="w-2 h-2 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </div>
+                    <span className="text-xs text-text-muted group-hover:text-white transition-colors uppercase tracking-wider">Remember_Me</span>
+                  </label>
+                  <Link to="/forgot-password" className="text-xs text-text-muted hover:text-primary uppercase tracking-wider transition-colors">
+                    Reset_Passcode?
+                  </Link>
+                </div>
+  
+                <button
+                  type="button"
+                  className="w-full bg-primary hover:bg-white hover:text-black text-black font-bold py-4 uppercase tracking-widest transition-all clip-diagonal flex items-center justify-center space-x-2 group mt-8"
+                  onClick={handleSubmit}
+                >
+                  <span>Initiate Session</span>
+                  <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                </button>
+  
+                <div className="grid grid-cols-2 gap-4 mt-6">
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
+                    className="py-3 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-xs uppercase tracking-widest transition-all"
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    Via Google
+                  </button>
+                  <button
+                    type="button"
+                    className="py-3 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-xs uppercase tracking-widest transition-all"
+                  >
+                    Via LinkedIn
                   </button>
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-2">
-                <label className="flex items-center space-x-2 cursor-pointer group">
-                  <div className="w-4 h-4 border border-white/30 group-hover:border-primary flex items-center justify-center transition-colors">
-                    <div className="w-2 h-2 bg-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                  <span className="text-xs text-text-muted group-hover:text-white transition-colors uppercase tracking-wider">Remember_Me</span>
-                </label>
-                <Link to="/forgot-password" className="text-xs text-text-muted hover:text-primary uppercase tracking-wider transition-colors">
-                  Reset_Passcode?
-                </Link>
-              </div>
-
-              <button
-                type="button"
-                className="w-full bg-primary hover:bg-white hover:text-black text-black font-bold py-4 uppercase tracking-widest transition-all clip-diagonal flex items-center justify-center space-x-2 group mt-8"
-                onClick={handleSubmit}
-              >
-                <span>Initiate Session</span>
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <div className="grid grid-cols-2 gap-4 mt-6">
-                <button
-                  type="button"
-                  className="py-3 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-xs uppercase tracking-widest transition-all"
-                >
-                  Via Google
-                </button>
-                <button
-                  type="button"
-                  className="py-3 border border-white/10 hover:border-white/30 hover:bg-white/5 text-white text-xs uppercase tracking-widest transition-all"
-                >
-                  Via LinkedIn
-                </button>
-              </div>
-            </form>
+              </form>
 
             <div className="mt-8 text-center">
               <p className="text-text-muted text-xs">

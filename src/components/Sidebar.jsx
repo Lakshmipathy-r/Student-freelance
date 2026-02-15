@@ -1,14 +1,22 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, Briefcase, FileText, MessageCircle, 
-  Star, User, GraduationCap, Settings, LogOut, Terminal
+  Star, User, GraduationCap, Settings, LogOut, Terminal, Users
 } from 'lucide-react';
+import { useAuthStore } from '../store/authStore';
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
 
-  const menuItems = [
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const studentMenuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: Briefcase, label: 'Browse_Gigs', path: '/gigs' },
     { icon: FileText, label: 'Applications', path: '/applications' },
@@ -18,6 +26,17 @@ const Sidebar = () => {
     { icon: GraduationCap, label: 'Mentorship', path: '/mentorship' },
     { icon: Settings, label: 'System', path: '/settings' },
   ];
+
+  const recruiterMenuItems = [
+    { icon: Home, label: 'Dashboard', path: '/dashboard' },
+    { icon: Briefcase, label: 'My_Job_Posts', path: '/dashboard' }, // Placeholder, can be /my-jobs
+    { icon: Users, label: 'Applicants', path: '/applications' },
+    { icon: MessageCircle, label: 'Interviews', path: '/messages' },
+    { icon: Star, label: 'Company_Profile', path: '/profile' },
+    { icon: Settings, label: 'Settings', path: '/settings' },
+  ];
+
+  const menuItems = (user?.role === 'recruiter' || user?.role === 'Recruiter') ? recruiterMenuItems : studentMenuItems;
 
   return (
     <aside className="hidden md:flex md:flex-col md:w-64 bg-background border-r border-white/10 min-h-screen relative">
@@ -66,7 +85,10 @@ const Sidebar = () => {
 
         {/* Logout Button */}
         <div className="px-2 mt-4 relative z-10">
-          <button className="w-full group flex items-center px-4 py-3 text-sm font-mono uppercase tracking-wider text-text-muted hover:text-accent hover:bg-accent/5 transition-all">
+          <button 
+            onClick={handleLogout}
+            className="w-full group flex items-center px-4 py-3 text-sm font-mono uppercase tracking-wider text-text-muted hover:text-accent hover:bg-accent/5 transition-all"
+          >
             <LogOut className="mr-3 h-4 w-4" />
             <span>Disconnect</span>
           </button>

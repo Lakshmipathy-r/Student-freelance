@@ -7,9 +7,10 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import GigMarketplace from './pages/GigMarketplace';
 import Applications from './pages/Applications';
+import ApplicantProfile from './pages/recruiter/ApplicantProfile';
 import Messages from './pages/Messages';
 import Reviews from './pages/Reviews';
-import Profile from './pages/Profile';
+import Profile from './pages/student/Profile';
 import Settings from './pages/Settings';
 import AlumniMentorship from './pages/AlumniMentorship';
 import { useAuthStore } from './store/authStore';
@@ -88,6 +89,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Applications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/applicant/:id"
+            element={
+              <ProtectedRoute>
+                <ApplicantProfile />
               </ProtectedRoute>
             }
           />

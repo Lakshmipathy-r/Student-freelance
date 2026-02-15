@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { MapPin, Mail, Calendar, Briefcase, Award } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
-import { useAuthStore } from '../store/authStore';
+import Navbar from '../../components/Navbar';
+import Sidebar from '../../components/Sidebar';
+import { useAuthStore } from '../../store/authStore';
 
 const Profile = () => {
   const { user } = useAuthStore();
@@ -76,6 +76,36 @@ const Profile = () => {
                         {skill}
                       </span>
                     ))}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <h2 className="text-xl font-bold text-text-primary">Portfolio</h2>
+                    <button className="text-sm text-accent-primary hover:underline">+ Add Project</button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {/* Mock Portfolio Items */}
+                    <div className="bg-primary-bg border border-border rounded-lg p-4 group hover:border-accent-primary transition-colors">
+                      <div className="h-32 bg-gray-800 rounded-md mb-3 flex items-center justify-center text-text-secondary">
+                        <span className="text-xs uppercase tracking-widest">[Project_Preview]</span>
+                      </div>
+                      <h3 className="font-bold text-text-primary mb-1 group-hover:text-accent-primary transition-colors">E-commerce Platform</h3>
+                      <p className="text-xs text-text-secondary mb-2">React, Node.js, MongoDB</p>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-text-muted">Jan 2024</span>
+                        <button className="text-accent-primary hover:underline">View Details</button>
+                      </div>
+                    </div>
+                    
+                    {/* Upload Placeholder */}
+                    <button className="bg-primary-bg border border-border border-dashed rounded-lg p-4 flex flex-col items-center justify-center gap-2 hover:border-accent-primary hover:bg-white/5 transition-all text-text-secondary hover:text-white h-full min-h-[180px]">
+                       <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                          <span className="text-xl">+</span>
+                       </div>
+                       <span className="text-sm font-bold uppercase tracking-wider">Upload_Project</span>
+                       <span className="text-[10px] text-text-muted">Supported: JPG, PNG, PDF</span>
+                    </button>
                   </div>
                 </div>
 
