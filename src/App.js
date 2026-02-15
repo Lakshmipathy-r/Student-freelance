@@ -10,9 +10,10 @@ import Applications from './pages/Applications';
 import ApplicantProfile from './pages/recruiter/ApplicantProfile';
 import Messages from './pages/Messages';
 import Reviews from './pages/Reviews';
-import Profile from './pages/student/Profile';
+import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import AlumniMentorship from './pages/AlumniMentorship';
+import FindTalent from './pages/recruiter/FindTalent';
 import { useAuthStore } from './store/authStore';
 
 // Protected Route Component
@@ -137,6 +138,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/find-talent"
+            element={
+              <ProtectedRoute>
+                <FindTalent />
               </ProtectedRoute>
             }
           />

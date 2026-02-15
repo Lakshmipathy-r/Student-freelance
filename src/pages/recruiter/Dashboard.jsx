@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Users, FileText, Calendar, TrendingUp, Search, MessageSquare, Plus, Bell } from 'lucide-react';
 import Navbar from '../../components/Navbar';
 import Sidebar from '../../components/Sidebar';
 import { useAuthStore } from '../../store/authStore';
 import { Link } from 'react-router-dom';
+import PostGigModal from '../../components/recruiter/PostGigModal';
 
 const RecruiterDashboard = () => {
   const { user } = useAuthStore();
+  const [isPostGigOpen, setIsPostGigOpen] = useState(false);
 
   const stats = [
     { icon: FileText, label: 'Applications', value: '45', change: '+12 this week', color: 'text-primary' },
@@ -74,7 +76,10 @@ const RecruiterDashboard = () => {
               </h1>
             </div>
             
-            <button className="bg-primary hover:bg-white text-black font-bold py-3 px-6 uppercase tracking-widest text-xs transition-all clip-diagonal flex items-center gap-2 group">
+            <button 
+              onClick={() => setIsPostGigOpen(true)}
+              className="bg-primary hover:bg-white text-black font-bold py-3 px-6 uppercase tracking-widest text-xs transition-all clip-diagonal flex items-center gap-2 group"
+            >
               <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
               <span>Post_New_Gig</span>
             </button>
@@ -191,6 +196,8 @@ const RecruiterDashboard = () => {
           </div>
         </main>
       </div>
+
+      <PostGigModal isOpen={isPostGigOpen} onClose={() => setIsPostGigOpen(false)} />
     </div>
   );
 };

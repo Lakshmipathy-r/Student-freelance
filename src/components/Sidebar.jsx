@@ -30,6 +30,7 @@ const Sidebar = () => {
   const recruiterMenuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: Briefcase, label: 'My_Job_Posts', path: '/dashboard' }, // Placeholder, can be /my-jobs
+    { icon: Users, label: 'Find_Talent', path: '/find-talent' },
     { icon: Users, label: 'Applicants', path: '/applications' },
     { icon: MessageCircle, label: 'Interviews', path: '/messages' },
     { icon: Star, label: 'Company_Profile', path: '/profile' },
